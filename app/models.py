@@ -18,6 +18,11 @@ class User(db.Model, UserMixin):
     pitches=db.relationship("pitch",backref="user",lazy="dynamic")
     downvotes=db.relationship("downvote",backref="user",lazy="dynamic")
     upvotes=db.relationship("upvote",backref="user",lazy="dynamic")
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+
     @property
     def set_password(self):
         raise AttributeError("You cannot read the password attribute")
@@ -41,7 +46,7 @@ class User(db.Model, UserMixin):
         return f"user:{self.username}"
         
 
-class Pitch(db.Model, UserMixin):
+class Pitch(db.Model):
     __tablename__="users"
     id=db.Column(db.Integer, Primary_Key=True)
     username=db.Column(db.String(255), Unique=True, nullable=False)
