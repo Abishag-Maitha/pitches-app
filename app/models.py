@@ -10,12 +10,17 @@ class User(db.Model, UserMixin):
     id=db.Column(db.Integer, Primary_Key=True)
     username=db.Column(db.String(255), Unique=True, nullable=False)
     email=db.Column(db.String(255), Unique=True, index = True, nullable=False)
+    # role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+
     password_secure=db.Column(db.String(255), nullable=False)
     bio=db.Column(db.String(255))
     profile_pic_path=db.Column(db.String())
+
     pitches=db.relationship("pitch",backref="user",lazy="dynamic")
+    comments = db.relationship('Comment',backref = 'user',lazy = "dynamic")
     downvotes=db.relationship("downvote",backref="user",lazy="dynamic")
     upvotes=db.relationship("upvote",backref="user",lazy="dynamic")
+
 
     # @login_manager.user_loader
     # def load_user(id):
@@ -42,19 +47,30 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"user:{self.username}"
+
+# class Role(db.Model):
+#     __tablename__ = 'roles'
+
+#     id = db.Column(db.Integer,primary_key = True)
+#     name = db.Column(db.String(255))
+#     users = db.relationship('User',backref = 'role',lazy="dynamic")
+
+#     def __repr__(self):
+#         return f'User {self.name}'
         
 
 class Pitch(db.Model):
     __tablename__="pitches"
     id=db.Column(db.Integer, Primary_Key=True)
-    title=db.Column(db.String(255), Unique=True, nullable=False)
-    category=db.Column(db.String(255), Unique=True, nullable=False)
+    title=db.Column(db.String(255), nullable=False)
+    category=db.Column(db.String(255), index=True, nullable=False)
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
     time=db.Column(db.DateTime, default=datetime.utcnow)
     post=db.Column(db.Text(), nullable=False)
-    downvotes=db.relationship("downvote",backref="pitch",lazy="dynamic")
-    upvotes=db.relationship("upvote",backref="pitch",lazy="dynamic")
-
+    downvotes=db.relationship("Downvote",backref="pitch",lazy="dynamic")
+    upvotes=db.relationship("Upvote",backref="pitch",lazy="dynamic")
+    comment = db.relationship('Comment',backref='pitch',lazy='dynamic')
+     
 def save(self):
     db.session.add(self)
     db.session.commit()
@@ -102,10 +118,10 @@ def display_upvotes(cls,id):
 
 class Comment(db.Model):
     __tablename__="comments"
-    id=db.Column(db.Integer, Primary_Key=True)
-    user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
-    pitch_id=db.Column(db.Integer, db.ForeignKey('pitches.id'))
-    comment=db.Column(db.Text(), nullable=False)
+    id = db.Column(db.Integer, Primary_Key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pitch_id = db.Column(db.Integer, db.ForeignKey('pitches.id'))
+    comment = db.Column(db.Text(), nullable=False)
 
 def save(self):
     db.session.add(self)
