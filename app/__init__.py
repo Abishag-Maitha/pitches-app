@@ -1,5 +1,4 @@
 from flask import Flask
-import sqlalchemy
 from config import config_options
 from flask_mail import Mail
 from flask_login import LoginManager
