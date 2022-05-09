@@ -1,3 +1,5 @@
+from itertools import product
+from unicodedata import category
 from flask_login import login_required
 from flask import render_template,request,redirect,url_for,abort
 from app import main
@@ -10,9 +12,11 @@ def index():
     title='Pitches-App'
     all_pitches=Pitch.query.all()
     career_pitch=Pitch.query.filter_by(category="career").all()
-    interview_pitch=Pitch.query.filter_by(category="career").all()
+    interview_pitch=Pitch.query.filter_by(category="interview").all()
+    product_pitch=Pitch.query.filter_by(category="product").all()
+    hobby_pitch=Pitch.query.filter_by(category="hobby").all()
 
-    return render_template("index.html",pitches=all_pitches,career=career_pitch, interview=interview_pitch)
+    return render_template("index.html",pitches=all_pitches,career=career_pitch, interview=interview_pitch, product=product_pitch, hobby=hobby_pitch)
 
 @main.route('/user/<uname>')
 def profile(uname):
