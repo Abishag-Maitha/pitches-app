@@ -1,14 +1,14 @@
 # from flask import session
 # from sqlalchemy import ForeignKey, delete
-from . import db #login_manager
-from flask_login import UserMixin, current_user
+from . import db, login_manager
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 class User(db.Model, UserMixin):
     __tablename__="users"
-    id=db.Column(db.Integer, Primary_Key=True)
-    username=db.Column(db.String(255), Unique=True, nullable=False)
+    id=db.Column(db.Integer, primary_key=True)
+    username=db.Column(db.String(255), Unique=True, index = True)
     email=db.Column(db.String(255), Unique=True, index = True, nullable=False)
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
 
@@ -21,10 +21,9 @@ class User(db.Model, UserMixin):
     downvotes=db.relationship("downvote",backref="user",lazy="dynamic")
     upvotes=db.relationship("upvote",backref="user",lazy="dynamic")
 
-
-    # @login_manager.user_loader
-    # def load_user(id):
-    #     return User.query.get(int(id))
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
   
     @property
     def set_password(self):
@@ -61,7 +60,7 @@ class Role(db.Model):
 
 class Pitch(db.Model):
     __tablename__="pitches"
-    id=db.Column(db.Integer, Primary_Key=True)
+    id=db.Column(db.Integer, primary_key=True)
     title=db.Column(db.String(255), nullable=False)
     category=db.Column(db.String(255), index=True, nullable=False)
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -80,7 +79,7 @@ def __repr__(self):
 
 class Upvote(db.Model):
     __tablename__="upvotes"
-    id=db.Column(db.Integer, Primary_Key=True)
+    id=db.Column(db.Integer, primary_key=True)
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
     pitch_id=db.Column(db.Integer, db.ForeignKey('pitches.id'))
 
@@ -99,7 +98,7 @@ def display_upvotes(cls,id):
 
 class Downvote(db.Model):
     __tablename__="downvotes"
-    id=db.Column(db.Integer, Primary_Key=True)
+    id=db.Column(db.Integer, primary_key=True)
     user_id=db.Column(db.Integer, db.ForeignKey('users.id'))
     pitch_id=db.Column(db.Integer, db.ForeignKey('pitches.id'))
 
@@ -118,7 +117,7 @@ def display_upvotes(cls,id):
 
 class Comment(db.Model):
     __tablename__="comments"
-    id = db.Column(db.Integer, Primary_Key=True)
+    id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     pitch_id = db.Column(db.Integer, db.ForeignKey('pitches.id'))
     comment = db.Column(db.Text(), nullable=False)
