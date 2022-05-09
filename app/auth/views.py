@@ -19,7 +19,7 @@ def sign_up():
         db.session.add(user)
         db.session.commit()
 
-        EmailMessage("Welcome to watchlist","email/welcome_user",user.email,user=user)
+        EmailMessage("Welcome to Pitches-App","email/welcome_user",user.email,user=user)
         
         return redirect(url_for('auth.login'))
         title = "New Account"
