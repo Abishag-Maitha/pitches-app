@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     id=db.Column(db.Integer, Primary_Key=True)
     username=db.Column(db.String(255), Unique=True, nullable=False)
     email=db.Column(db.String(255), Unique=True, index = True, nullable=False)
-    # role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
 
     password_secure=db.Column(db.String(255), nullable=False)
     bio=db.Column(db.String(255))
@@ -48,15 +48,15 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"user:{self.username}"
 
-# class Role(db.Model):
-#     __tablename__ = 'roles'
+class Role(db.Model):
+    __tablename__ = 'roles'
 
-#     id = db.Column(db.Integer,primary_key = True)
-#     name = db.Column(db.String(255))
-#     users = db.relationship('User',backref = 'role',lazy="dynamic")
+    id = db.Column(db.Integer,primary_key = True)
+    name = db.Column(db.String(255))
+    users = db.relationship('User',backref = 'role',lazy="dynamic")
 
-#     def __repr__(self):
-#         return f'User {self.name}'
+    def __repr__(self):
+        return f'User {self.name}'
         
 
 class Pitch(db.Model):

@@ -3,7 +3,7 @@ from unicodedata import category
 from flask_login import login_required
 from flask import render_template,request,redirect,url_for,abort
 from app import main
-from ..models import User,Pitch,Comment,Upvote,Downvote
+from ..models import User,Pitch,Comment,Upvote,Downvote,Role
 from .forms import UpdateProfile
 from .. import db #photos
 

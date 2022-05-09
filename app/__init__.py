@@ -7,7 +7,7 @@ from flask_sqlalchemy import    SQLAlchemy
 # from flask_uploads import IMAGES, UploadSet, configure_uploads
 
 db=SQLAlchemy()
-from app.models import User,Pitch,Upvote,Downvote,Comment
+from app.models import User,Pitch,Upvote,Downvote,Comment,Role
 
 mail=Mail()
 bootstrap=Bootstrap()
