@@ -1,7 +1,5 @@
-import email
-import profile
-
-from sqlalchemy import delete
+from flask import session
+from sqlalchemy import ForeignKey, delete
 from . import db, login_manager
 from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -47,15 +45,33 @@ class User(db.Model, UserMixin):
         
 
 class Pitch(db.Model):
-    __tablename__="users"
+    __tablename__="pitches"
     id=db.Column(db.Integer, Primary_Key=True)
-    username=db.Column(db.String(255), Unique=True, nullable=False)
-    email=db.Column(db.String(255), Unique=True, nullable=False)
-    secure_password=db.Column(db.String(255), nullable=False)
-    bio=db.Column(db.String(255))
-    profile_pic_path=db.Column(db.String())
-    pitches=db.relationship("pitch",backref="user",lazy="dynamic")
-    downvotes=db.relationship("downvote",backref="user",lazy="dynamic")
-    upvotes=db.relationship("upvote",backref="user",lazy="dynamic")
+    title=db.Column(db.String(255), Unique=True, nullable=False)
+    category=db.Column(db.String(255), Unique=True, nullable=False)
+    user_id=db.Column(db.Integer, ForeignKey('users.id'))
+    time=db.Column(db.Datetime, default=datetime.utcnow)
+    post=db.Column(db.Text(), nullable=False)
+    downvotes=db.relationship("downvote",backref="pitch",lazy="dynamic")
+    upvotes=db.relationship("upvote",backref="pitch",lazy="dynamic")
+
+class Upvote(db.Model):
+    __tablename__="upvotes"
+    id=db.Column(db.Integer, Primary_Key=True)
+    user_id=db.Column(db.Integer, ForeignKey('users.id'))
+    pitch_id=db.Column(db.Integer, ForeignKey('pitches.id'))
+
+def save(self):
+    db.session.add(self)
+    db.session.commit()
+
+@classmethod
+def display_upvotes(cls,id):
+    upvote=Upvote.query.filter_by(pitch_id=id).all()
+
+    return upvote
+
+
+
 
 
