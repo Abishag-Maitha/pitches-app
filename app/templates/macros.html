@@ -1,0 +1,50 @@
+{% macro display(pitches) %}
+<div class="container-fluid">
+  <div class="row">
+    {% if pitches %} {% for pitch in pitches %}
+    <div class="col-md-4">
+      <div class="thumbnail border rounded" id="carded">
+        <h6 class="card-header text-center">{{pitch.title}}</h6>
+        <div class="card-body">
+          <p>{{pitch.post}}</p>
+          <p class="text-center">Category: {{pitch.category}}</p>
+          <footer class="blockquote-footer text-center">
+            Posted by: {{pitch.user.username}}
+          </footer>
+          <div>
+            <span class="foot">{{pitch.comment.count()}} Comments</span>
+            <span class="foot">
+              <a href="{{url_for('main.like',id = pitch.id)}}"
+                ><i
+                  class="fa fa-thumbs-up"
+                  style="font-size: 18px; color: blue"
+                ></i
+              ></a>
+              {{pitch.upvote.count()}}</span
+            >
+            <span class="foot ms-3">
+              <a href="{{url_for('main.dislike',id = pitch.id)}}">
+                <i class="fa fa-thumbs-down" style="color:grey"></i>
+                {{pitch.downvote.count()}}</a
+              ></span
+            >
+          </div>
+          <a
+            href="{{url_for('main.comment',pitch_id = pitch.id)}}"
+            class="btn btn-outline-warning btn-sm mt-3 d-block"
+          >
+            Leave Comment</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="card w-90 mb-3">
+      <div class="card-body">
+        <p class="card-title">Nothing posted yet</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}

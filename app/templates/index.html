@@ -1,7 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
- Pitches-App
-</h1>
-{% endblock %}
+        <div  class="container" id="particles-js">
+                <h2 class="text-center" id="posts">Categories</h2>
+            <ul class="nav nav-pills nav-justified nav-fill" role="tablist">
+                <li class="nav-item" >
+                    <a id ="cats" class="nav-link" data-toggle="tab" href="#all"><strong>All Pitches</strong> </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id ="cats" data-toggle="tab" href="#jobs">Career Pitches</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id ="cats" data-toggle="tab" href="#event">Interview Pitches</a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a class="nav-link" id ="cats"data-toggle="tab" href="#ads">Advert Pitches</a>
+                </li> -->
+            </ul>
+            <div class="tab-content">
+                <div  class="container tab-pane active" id="all"><br>
+                    {{ macro.display(pitches) }}
+                </div>
+                <div  class="container tab-pane fade" id="event"><br>
+                    {{ macro.display(career)}}
+                </div>
+                <div  class="container tab-pane fade" id="jobs"><br>
+                    {{ macro.display(interview) }}
+                </div>
+                <!-- <div  class="container tab-pane fade" id="ads"><br>
+                    {{ macro.display(advertisement) }}
+                </div> -->
+            </div>
+        </div>
+{% endblock%}
