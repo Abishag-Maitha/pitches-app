@@ -11,8 +11,8 @@ class User(db.Model, UserMixin):
     __tablename__="users"
     id=db.Column(db.Integer, Primary_Key=True)
     username=db.Column(db.String(255), Unique=True, nullable=False)
-    email=db.Column(db.String(255), Unique=True, nullable=False)
-    secure_password=db.Column(db.String(255), nullable=False)
+    email=db.Column(db.String(255), Unique=True, index = True, nullable=False)
+    password_secure=db.Column(db.String(255), nullable=False)
     bio=db.Column(db.String(255))
     profile_pic_path=db.Column(db.String())
     pitches=db.relationship("pitch",backref="user",lazy="dynamic")
