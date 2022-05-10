@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import    SQLAlchemy
 from flask_uploads import IMAGES, UploadSet, configure_uploads
+from flask_migrate import Migrate
 
 
 mail=Mail()
@@ -27,7 +28,8 @@ def create_app(config_name):
     db.init_app(app)
     bootstrap.init_app(app)
     mail.init_app(app)
-    
+    migrate=Migrate(app,db)
+
     #Registering Blueprint
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
