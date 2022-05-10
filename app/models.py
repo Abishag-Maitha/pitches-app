@@ -16,10 +16,10 @@ class User(db.Model, UserMixin):
     bio=db.Column(db.String(255))
     profile_pic_path=db.Column(db.String())
 
-    pitches=db.relationship("pitch",backref="user",lazy="dynamic")
+    pitches=db.relationship("Pitch",backref="user",lazy="dynamic")
     comments = db.relationship('Comment',backref = 'user',lazy = "dynamic")
-    downvotes=db.relationship("downvote",backref="user",lazy="dynamic")
-    upvotes=db.relationship("upvote",backref="user",lazy="dynamic")
+    downvotes=db.relationship("Downvote",backref="user",lazy="dynamic")
+    upvotes=db.relationship("Upvote",backref="user",lazy="dynamic")
 
     @login_manager.user_loader
     def load_user(id):

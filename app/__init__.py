@@ -22,7 +22,7 @@ def create_app(config_name):
     # Creating the app configurations
     app.config.from_object(config_options[config_name])
 
-    #Initialzining flask extensions
+    #Initialzining flask packages
     login_manager.init_app(app)
     db.init_app(app)
     bootstrap.init_app(app)
@@ -33,7 +33,7 @@ def create_app(config_name):
     app.register_blueprint(main_blueprint)
 
     from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint,url_prefix = '/authenticate')
+    app.register_blueprint(auth_blueprint,url_prefix = '/auth')
 
     configure_uploads(app,photos)
      
